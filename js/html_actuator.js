@@ -46,6 +46,19 @@ HTMLActuator.prototype.clearContainer = function (container) {
   }
 };
 
+isSimple = function (num) {
+    if(num==1) // 1 - не простое число
+        {return false;}
+        // перебираем возможные делители от 2 до sqrt(n)
+    for(d=2; d*d<=num; d++)
+    { 
+        if(num%d==0) {return false;}
+    }
+    // если нет нетривиальных делителей, то простое
+    return true;
+                
+}
+
 HTMLActuator.prototype.addTile = function (tile) {
   var self = this;
 
@@ -53,9 +66,9 @@ HTMLActuator.prototype.addTile = function (tile) {
   var inner     = document.createElement("div");
   var position  = tile.previousPosition || { x: tile.x, y: tile.y };
   var positionClass = this.positionClass(position);
-
+  var classes = ["tile", "tile", positionClass];
   // We can't use classlist because it somehow glitches when replacing classes
-  var classes = ["tile", "tile-" + tile.value, positionClass];
+  if (isSimple(tile.value)) {classes = ["tile", "tile-simple", positionClass]; }
 
   if (tile.value > 500) classes.push("tile-super");
 
